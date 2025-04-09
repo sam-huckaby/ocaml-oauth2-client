@@ -1,0 +1,2 @@
+(library
+ (name ocaml_oauth2_client))

@@ -1,0 +1,4 @@
+(executable
+ (public_name ocaml_oauth2_client)
+ (name main)
+ (libraries ocaml_oauth2_client))
