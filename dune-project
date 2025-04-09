@@ -5,22 +5,35 @@
 (generate_opam_files true)
 
 (source
- (github username/reponame))
+ (github sam-huckaby/ocaml-oauth2-client))
 
-(authors "Author Name")
+(authors "Sam huckaby")
 
-(maintainers "Maintainer Name")
+(maintainers "Sam Huckaby")
 
-(license LICENSE)
+(license MIT)
 
-(documentation https://url/to/documentation)
+(documentation https://github.com/sam-huckaby/ocaml-oauth2-client)
 
 (package
  (name ocaml_oauth2_client)
- (synopsis "A short synopsis")
- (description "A longer description")
- (depends ocaml dune)
+ (synopsis "A straightforward OAuth2 client")
+ (description "A client library for OAuth2 that will help make the setup of secure auth flows easy to manage and straightforward to setup.")
+ (depends
+  ocaml
+  dune
+  cohttp-lwt-unix
+  yojson
+  uri
+  ppx_deriving
+  ppx_deriving_yojson)
  (tags
-  (topics "to describe" your project)))
+  (oauth2 security oauth)))
+
+(library
+ (name oauth2_client)
+ (public_name oauth2_client)
+ (libraries cohttp-lwt-unix yojson uri ppx_deriving ppx_deriving_yojson)
+ (preprocess (pps ppx_deriving ppx_deriving_yojson)))
 
 ; See the complete stanza docs at https://dune.readthedocs.io/en/stable/reference/dune-project/index.html
