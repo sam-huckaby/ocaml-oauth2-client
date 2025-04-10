@@ -1,6 +1,0 @@
-# dune init proj ocaml_oauth2_client
-# OCAMLPARAM: unset
-# Shared cache: disabled
-# Shared cache location: /Users/samhuckaby/.cache/dune/db
-# Workspace root: /Users/samhuckaby/development/ocaml_oauth2_client
-# Auto-detected concurrency: 8
