@@ -13,8 +13,7 @@ end
 (* Generate a cryptographically secure random state value *)
 let generate_state () =
   let rng = Random.device_rng "/dev/urandom" in
-  let state = transform_string (Hexa.encode ()) (rng#random 32) in
-  state
+  transform_string (Hexa.encode ()) (Random.string rng 32)
 
 (*
   There are actually five flow types, but the remaining two are considered insecure
@@ -90,21 +89,23 @@ let create flow_type config = { flow_type; config }
 
 (* This function makes the request to the authorization server and returns the response and the newly minted state value for confirming on the redirect response *)
 let get_authorization_url t =
+  Printf.printf "Building authorization url...\n";
   match t.config with
   | AuthorizationCodeConfig config ->
     let state = generate_state () in
     let params = [
       ("response_type", "code");
       ("client_id", config.client_id);
-      ("redirect_uri", Uri.to_string config.redirect_uri);
+      ("redirect_uri", Uri.pct_encode (Uri.to_string config.redirect_uri));
       ("scope", String.concat " " config.scope);
       ("state", state);
     ] in
-    let resp = Uri.add_query_params' config.authorization_endpoint params in
-    (resp, state)
+    let auth_url = Uri.add_query_params' config.authorization_endpoint params in
+    (auth_url, state)
   | _ -> failwith "Authorization URL only available for Authorization Code flow"
 
 let exchange_code_for_token t code =
+  Printf.printf "Exchanging code for token...\n";
   match t.config with
   | AuthorizationCodeConfig config -> begin
     let body = Cohttp_lwt.Body.of_string_list [
